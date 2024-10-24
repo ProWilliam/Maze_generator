@@ -40,37 +40,6 @@ class Maze:
 
         return self.maze
 
-
-    def fill_board(self):
-        """Fill the board completely with walls."""
-        self.maze = np.ones((self.height, self.width), dtype=int)
-
-    def carve_path(self, current):
-        """Create a path from the current cell using backtracking."""
-        x, y = current
-        self.maze[x, y] = 0  # Set the current cell as path
-
-        # Mix the addresses to make the random walk
-        directions = [(2, 0), (-2, 0), (0, 2), (0, -2)]
-        random.shuffle(directions)
-
-        for dx, dy in directions:
-            nx, ny = x + dx, y + dy
-            if 0 < nx < self.height and 0 < ny < self.width and self.maze[nx, ny] == 1:
-                # If the adjacent cell is empty, create a path
-                self.maze[x + dx // 2, y + dy // 2] = 0  # Remove the wall between
-                self.carve_path((nx, ny))  # Recursión
-
-    def generate_maze(self):
-        """Generates the maze completely filled except for the path."""
-        # Initialize the maze with walls
-        self.fill_board()
-
-        # Start carving the maze from the starting cell
-        self.carve_path((1, 1))
-
-        return self.maze
-
     def solve_maze(self, start=(1, 1), end=None):
         if end is None:
             end = (self.height - 2, self.width - 2)
@@ -113,18 +82,18 @@ class Maze:
         for x in range(self.height):
             for y in range(self.width):
                 if self.maze[x, y] == 1:
-                    color = (0, 0, 0)  # Pared
+                    color = (0, 0, 0)  # Path
                 else:
-                    color = (255, 255, 255)  # Camino
+                    color = (255, 255, 255)  # Path
                 for i in range(10):
                     for j in range(10):
                         pixels[y * 10 + j, x * 10 + i] = color
 
-        # Dibujar la solución
+        # Draw the solution
         for (x, y) in self.solution:
             for i in range(10):
                 for j in range(10):
-                    pixels[y * 10 + j, x * 10 + i] = (255, 0, 0)  # Solución en rojo
+                    pixels[y * 10 + j, x * 10 + i] = (255, 0, 0)  # Solution in red
 
         img.save(filename)
 
