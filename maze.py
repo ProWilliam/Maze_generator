@@ -11,7 +11,7 @@ class Maze:
         self.solution = []
 
     def fill_board(self):
-        "Rellena el tablero completamente con paredes."""
+        """Fill the board completely with walls."""
         self.maze = np.ones((self.height, self.width), dtype=int)
 
     def carve_path(self, current):
